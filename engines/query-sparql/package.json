@@ -164,7 +164,8 @@
     "@comunica/mediator-number": "^2.0.1",
     "@comunica/mediator-race": "^2.0.1",
     "@comunica/runner": "^2.0.3",
-    "@comunica/runner-cli": "^2.0.3"
+    "@comunica/runner-cli": "^2.0.3",
+    "@comunica/actor-query-operation-reduced-my": "^1.0.0"
   },
   "scripts": {
     "build": "npm run build:ts",
