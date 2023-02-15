@@ -42,11 +42,9 @@ export class ActorQueryOperationLeftJoin extends ActorQueryOperationTypedMediate
         .transform({
           autoStart: false,
           transform: async(bindings: Bindings, done: () => void, push: (item: Bindings) => void) => {
+            let result = null;
             try {
-              const result = await evaluator.evaluateAsEBV(bindings);
-              if (result) {
-                push(bindings);
-              }
+              result = await evaluator.evaluateAsEBV(bindings);
             } catch (error: unknown) {
               // We ignore all Expression errors.
               // Other errors (likely programming mistakes) are still propagated.
@@ -56,9 +54,13 @@ export class ActorQueryOperationLeftJoin extends ActorQueryOperationTypedMediate
                 // In many cases, this is a user error, where the user should manually cast the variable to a string.
                 // In order to help users debug this, we should report these errors via the logger as warnings.
                 this.logWarn(context, 'Error occurred while filtering.', () => ({ error, bindings }));
+                result = true;
               } else {
                 bindingsStream.emit('error', error);
               }
+            }
+            if (result) {
+              push(bindings);
             }
             done();
           },
